@@ -66,14 +66,20 @@ SA-LANDER extends the LANDER framework for Federated Class-Incremental Learning 
 ### What SA-LANDER Changes
 LANDER uses a fixed bounding radius $r = 0.015$ for all classes:
 
-$$\mathcal{B}(f, e) = \max(0, \|e_y - W(f)\|^2 - 0.015)$$
+```math
+\mathcal{B}(f, e) = \max(0, \|e_y - W(f)\|^2 - 0.015)
+```
 
 SA-LANDER replaces this with adaptive per-class radii tracked via Exponential Moving Average (EMA):
 
-$$d_y = \text{mean\_batch}(\|e_y - W(f)\|^2)$$
-$$r_y = 0.9r_y + 0.1d_y$$
-$$r_y = \text{clamp}(r_y, 0.005, 0.05)$$
-$$\mathcal{B}_{\text{adaptive}} = \text{mean}(\max(0, \text{dist}_i - r_{y_i}))$$
+```math
+\begin{aligned}
+d_y &= \text{mean\_batch}(\|e_y - W(f)\|^2) \\
+r_y &= 0.9r_y + 0.1d_y \\
+r_y &= \text{clamp}(r_y, 0.005, 0.05) \\
+\mathcal{B}_{\text{adaptive}} &= \text{mean}(\max(0, \text{dist}_i - r_{y_i}))
+\end{aligned}
+```
 
 ### What Stays the Same
 - LTE anchors from CLIP (fixed, not adapted)
